@@ -17,10 +17,10 @@ import btnPrimary from "../../components/ui/btnPrimary";
         <form @submit.prevent="login" class="w-full">
           <input
             class="w-full mb-5 p-3 border bg-white border-gray-300 rounded-2xl text-gray-700"
-            v-model="username"
+            v-model="email"
             type="text"
-            placeholder="Pseudo"
-            aria-label="Pseudo"
+            placeholder="Email"
+            aria-label="Email"
           />
           <input
             class="w-full mb-5 p-3 border bg-white border-gray-300 rounded-2xl text-gray-700"
@@ -51,7 +51,7 @@ import btnPrimary from "../../components/ui/btnPrimary";
 export default {
   data() {
     return {
-      username: "",
+      email: "",
       password: "",
     };
   },
@@ -63,12 +63,13 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: this.username,
+          email: this.email,
           password: this.password,
         }),
       });
       const data = await response.json();
       console.log(data);
+      localStorage.setItem("token", data.token);
       this.$router.push("/");
     },
   },

@@ -52,7 +52,11 @@ import { useRoute } from "vue-router";
               <!-- Rating stars -->
             </div>
             <div class="gap-4 flex-row items-center w-full flex">
-              <UiBtnPrimary :btnText="'Watchlist'" size="medium"></UiBtnPrimary>
+              <UiBtnPrimary
+                :btnText="'Watchlist'"
+                size="medium"
+                @click="addToWatchlist"
+              ></UiBtnPrimary>
               <UiBtnSecondary
                 :btnText="'Déjà vu'"
                 size="medium"
@@ -162,6 +166,27 @@ export default {
     getYoutubeEmbededUrl(url) {
       const videoId = url.split("v=")[1];
       return `https://www.youtube.com/embed/${videoId}`;
+    },
+
+    addToWatchlist() {
+      fetch("http://localhost:3333/watchlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          // stocker token dans localStorage lors de la connexion
+        },
+        body: JSON.stringify({ mediaId: this.media.id }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          alert("Media ajouté à la watchlist!");
+        })
+        .catch((error) => {
+          console.error("Erreur lors de l'ajout à la watchlist:", error);
+          alert("Erreur lors de l'ajout à la watchlist.");
+        });
     },
   },
 };

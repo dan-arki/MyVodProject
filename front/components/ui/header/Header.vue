@@ -12,7 +12,7 @@
           <img src="/watchings.svg" alt="" />
           <NuxtLink
             to="/watchings"
-            class="text-white text-lg hover:text-blue400 hover:font-semibold transition duration-300 ease-in-out"
+            class="text-white text-lg hover:text-blue400 transition duration-300 ease-in-out"
             >Déjà vu</NuxtLink
           >
         </li>
@@ -20,7 +20,7 @@
           <img src="/watchlist.svg" alt="" />
           <NuxtLink
             to="/watchlist"
-            class="text-white text-lg hover:text-blue400 hover:font-semibold transition duration-300 ease-in-out"
+            class="text-white text-lg hover:text-blue400 transition duration-300 ease-in-out"
             >Watchlist</NuxtLink
           >
         </li>

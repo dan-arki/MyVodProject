@@ -33,7 +33,7 @@
     </article>
 
     <!-- Liste Autres plateformes -->
-    <article class="flex flex-col gap-8 mx-10 mt-16">
+    <article class="flex flex-col gap-8 mx-10 my-16">
       <h2 class="font-semibold text-5xl self-center text-white">
         Découvrez d’autres plateformes
       </h2>
