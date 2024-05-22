@@ -1,5 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
+import { api } from "~/lib/api";
 </script>
 
 <template>
@@ -52,11 +53,21 @@ import { useRoute } from "vue-router";
               <!-- Rating stars -->
             </div>
             <div class="gap-4 flex-row items-center w-full flex">
+              <!-- Watchlist -->
               <UiBtnPrimary
-                :btnText="'Watchlist'"
+                v-if="!isInWatchlist"
+                :btnText="'Ajouter à la Watchlist'"
                 size="medium"
                 @click="addToWatchlist"
               ></UiBtnPrimary>
+              <UiBtnPrimary
+                v-if="isInWatchlist"
+                :btnText="'Retirer de la Watchlist'"
+                size="medium"
+                @click="removeFromWatchlist"
+              ></UiBtnPrimary>
+
+              <!-- Déjà vu -->
               <UiBtnSecondary
                 :btnText="'Déjà vu'"
                 size="medium"
@@ -106,6 +117,7 @@ import { useRoute } from "vue-router";
             >
           </div>
           <div
+            :key="actor.id"
             v-for="actor in media.actor"
             class="gap-6 flex flex-row lg:w-80 flex-wrap md:w-full items-start py-2.5"
           >
@@ -140,24 +152,21 @@ export default {
     return {
       // posters: [],
       media: null,
+      isInWatchlist: false,
     };
   },
 
-  mounted() {
-    this.getPosterById();
+  async mounted() {
+    await this.loadMedia();
+    this.checkWatchlist();
+    console.log(this.checkWatchlist);
   },
 
   methods: {
-    async getPosterById() {
-      const id = useRoute().params.populars;
+    async loadMedia() {
+      const id = useRoute().params.id;
       try {
-        const response = await fetch(`http://localhost:3333/media/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
+        const data = await api.getMedia(id);
         console.log(data);
         this.media = data;
       } catch (error) {
@@ -169,20 +178,15 @@ export default {
       return `https://www.youtube.com/embed/${videoId}`;
     },
 
+    // Watchlist
+
     addToWatchlist() {
-      fetch("http://localhost:3333/watchlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // stocker token dans localStorage lors de la connexion
-        },
-        body: JSON.stringify({ mediaId: this.media.id }),
-      })
-        .then((response) => response.json())
+      api
+        .addToWatchlist(this.media.id)
         .then((data) => {
           console.log(data);
-          alert("Media ajouté à la watchlist!");
+          // alert("Media ajouté à la watchlist!");
+          this.isInWatchlist = true;
         })
         .catch((error) => {
           console.error("Erreur lors de l'ajout à la watchlist:", error);
@@ -190,6 +194,35 @@ export default {
         });
     },
 
+    checkWatchlist() {
+      api
+        .checkWatchlist(this.media.id)
+        .then((data) => {
+          this.isInWatchlist = data.isInWatchlist;
+        })
+
+        .catch((error) =>
+          console.error("Erreur lors de la vérification de la watchlist", error)
+        );
+    },
+
+    removeFromWatchlist() {
+      api
+        .removeFromWatchlist(this.media.id)
+        .then((data) => {
+          console.log(data);
+          // alert("Media retiré de la watchlist!");
+          this.isInWatchlist = false;
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la suppression de la watchlist", error);
+          alert("Erreur lors de la suppression de la watchlist");
+        });
+    },
+
+    //
+
+    // Déjà vu
     addToViewedAlready() {
       fetch("http://localhost:3333/watching", {
         method: "POST",
@@ -210,28 +243,8 @@ export default {
           alert("Erreur lors de l'ajout à la liste de déjà vu");
         });
     },
-
-    // addToViewedAlready() {
-    //   fetch("http://localhost:3333/watchings", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //       // stocker token dans localStorage lors de la connexion
-    //     },
-    //     body: JSON.stringify({ mediaId: this.media.id }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //       alert("Media ajouté à la liste de déjà vu!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Erreur lors de l'ajout à la watchlist:", error);
-    //       alert("Erreur lors de l'ajout à la liste de déjà vu.");
-    //     });
-    // },
   },
+  //
 };
 </script>
 

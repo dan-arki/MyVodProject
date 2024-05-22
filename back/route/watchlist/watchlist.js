@@ -42,9 +42,30 @@ router.get("/watchlist", auth, async (req, res) => {
   }
 });
 
-router.delete("/watchlist", auth, async (req, res) => {
+//get by id
+
+router.get("/watchlist/:id", auth, async (req, res) => {
   const user = req.auth.id;
-  const { mediaId } = req.body;
+  const { id } = req.params;
+  try {
+    const watchlist = await prisma.watchList.findFirst({
+      where: {
+        userId: user,
+        mediaId: parseInt(id),
+      },
+      include: {
+        media: true,
+      },
+    });
+    res.json({ isInWatchlist: watchlist ? true : false });
+  } catch (error) {
+    return res.json({ message: error });
+  }
+});
+
+router.delete("/watchlist/:id", auth, async (req, res) => {
+  const user = req.auth.id;
+  const mediaId = parseInt(req.params.id);
   try {
     await prisma.watchList.deleteMany({
       where: {
