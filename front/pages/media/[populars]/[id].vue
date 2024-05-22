@@ -60,6 +60,7 @@ import { useRoute } from "vue-router";
               <UiBtnSecondary
                 :btnText="'Déjà vu'"
                 size="medium"
+                @click="addToViewedAlready"
               ></UiBtnSecondary>
             </div>
             <div class="2608853 gap-2.5 flex-col items-start w-full py-6 flex">
@@ -188,6 +189,48 @@ export default {
           alert("Erreur lors de l'ajout à la watchlist.");
         });
     },
+
+    addToViewedAlready() {
+      fetch("http://localhost:3333/watching", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          // stocker token dans localStorage lors de la connexion
+        },
+        body: JSON.stringify({ mediaId: this.media.id }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          alert("Media ajouté à la liste de déjà vu!");
+        })
+        .catch((error) => {
+          console.error("Erreur lors de l'ajout à la liste de déjà vu", error);
+          alert("Erreur lors de l'ajout à la liste de déjà vu");
+        });
+    },
+
+    // addToViewedAlready() {
+    //   fetch("http://localhost:3333/watchings", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //       // stocker token dans localStorage lors de la connexion
+    //     },
+    //     body: JSON.stringify({ mediaId: this.media.id }),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log(data);
+    //       alert("Media ajouté à la liste de déjà vu!");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de l'ajout à la watchlist:", error);
+    //       alert("Erreur lors de l'ajout à la liste de déjà vu.");
+    //     });
+    // },
   },
 };
 </script>

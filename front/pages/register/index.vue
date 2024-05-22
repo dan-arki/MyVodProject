@@ -52,7 +52,9 @@
           </div>
 
           <!-- Primary Button component -->
-          <UiBtnPrimary :btnText="'Commencer'"></UiBtnPrimary>
+          <NuxtLink to="/login">
+            <UiBtnPrimary :btnText="'Commencer'"></UiBtnPrimary>
+          </NuxtLink>
         </form>
         <div class="flex gap-1 justify-center mt-5">
           <span class="font-bold text-xs text-textBlack">Déjà un compte ?</span>
