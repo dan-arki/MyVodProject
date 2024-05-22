@@ -18,10 +18,15 @@ function request(path, options:any = {}) {
 }
 
 export const api = {
-    // Auth
-
     getMedia :(id) => request(`/media/${id}`),
+
+    //Watchlist
     checkWatchlist : (id) => request(`/watchlist/${id}`),
     addToWatchlist : (id) => request(`/watchlist`, { method: 'POST',body : JSON.stringify({mediaId:id})}),
     removeFromWatchlist : (id) => request(`/watchlist/${id}`, { method: 'DELETE' }),
+
+    //Watchings
+    checkAlreadyViewed : (id) => request(`/watching/${id}`),
+    addToAlreadyViewed : (id) => request(`/watching`, { method: 'POST',body : JSON.stringify({mediaId:id})}),
+    removeFromAlreadyViewed : (id) => request(`/watching/${id}`, { method: 'DELETE' }),
 };

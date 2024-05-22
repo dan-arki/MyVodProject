@@ -71,4 +71,21 @@ router.get("/watching", auth, async (req, res) => {
   }
 });
 
+//delete media from watching
+router.delete("/watching/:id", auth, async (req, res) => {
+  const userId = req.auth.id;
+  const mediaId = parseInt(req.params.id);
+  try {
+    await prisma.watching.deleteMany({
+      where: {
+        userId: userId,
+        mediaId: mediaId,
+      },
+    });
+    res.json({ message: "Suppression du média des vidéos déjà vues." });
+  } catch (error) {
+    return res.json({ message: error });
+  }
+});
+
 export default router;

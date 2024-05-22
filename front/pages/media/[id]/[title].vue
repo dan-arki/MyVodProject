@@ -69,9 +69,16 @@ import { api } from "~/lib/api";
 
               <!-- Déjà vu -->
               <UiBtnSecondary
-                :btnText="'Déjà vu'"
+                v-if="!isInAlreadyViewed"
+                :btnText="'Ajouter à Déjà vu'"
                 size="medium"
-                @click="addToViewedAlready"
+                @click="addToAlreadyViewed"
+              ></UiBtnSecondary>
+              <UiBtnSecondary
+                v-if="isInAlreadyViewed"
+                :btnText="'Retirer de Déjà vu'"
+                size="medium"
+                @click="removeFromAlreadyViewed"
               ></UiBtnSecondary>
             </div>
             <div class="2608853 gap-2.5 flex-col items-start w-full py-6 flex">
@@ -153,13 +160,15 @@ export default {
       // posters: [],
       media: null,
       isInWatchlist: false,
+      isInAlreadyViewed: false,
     };
   },
 
   async mounted() {
     await this.loadMedia();
     this.checkWatchlist();
-    console.log(this.checkWatchlist);
+    this.checkAlreadyViewed();
+    // console.log(this.checkWatchlist);
   },
 
   methods: {
@@ -179,7 +188,6 @@ export default {
     },
 
     // Watchlist
-
     addToWatchlist() {
       api
         .addToWatchlist(this.media.id)
@@ -220,27 +228,50 @@ export default {
         });
     },
 
-    //
-
     // Déjà vu
-    addToViewedAlready() {
-      fetch("http://localhost:3333/watching", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // stocker token dans localStorage lors de la connexion
-        },
-        body: JSON.stringify({ mediaId: this.media.id }),
-      })
-        .then((response) => response.json())
+    addToAlreadyViewed() {
+      api
+        .addToAlreadyViewed(this.media.id)
         .then((data) => {
           console.log(data);
-          alert("Media ajouté à la liste de déjà vu!");
+          // alert("Media ajouté à la liste de déjà vu!");
+          this.isInAlreadyViewed = true;
         })
         .catch((error) => {
           console.error("Erreur lors de l'ajout à la liste de déjà vu", error);
           alert("Erreur lors de l'ajout à la liste de déjà vu");
+        });
+    },
+
+    checkAlreadyViewed() {
+      api
+        .checkAlreadyViewed(this.media.id)
+        .then((data) => {
+          console.log(data);
+          this.isInAlreadyViewed = data.isInAlreadyViewed;
+        })
+        .catch((error) => {
+          console.error(
+            "Erreur lors de la vérification de la liste de déjà vu",
+            error
+          );
+        });
+    },
+
+    removeFromAlreadyViewed() {
+      api
+        .removeFromAlreadyViewed(this.media.id)
+        .then((data) => {
+          console.log(data);
+          // alert("Media retiré de la liste de déjà vu!");
+          this.isInAlreadyViewed = false;
+        })
+        .catch((error) => {
+          console.error(
+            "Erreur lors de la suppression de la liste de déjà vu",
+            error
+          );
+          alert("Erreur lors de la suppression de la liste de déjà vu");
         });
     },
   },

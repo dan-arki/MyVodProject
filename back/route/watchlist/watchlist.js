@@ -9,6 +9,7 @@ const auth = expressjwt({
   algorithms: ["HS256"],
 });
 
+//add media to watchlist
 router.post("/watchlist", auth, async (req, res) => {
   const user = req.auth.id;
   const { mediaId } = req.body;
@@ -25,6 +26,7 @@ router.post("/watchlist", auth, async (req, res) => {
   }
 });
 
+//get watchlist
 router.get("/watchlist", auth, async (req, res) => {
   const user = req.auth.id;
   try {
@@ -42,8 +44,7 @@ router.get("/watchlist", auth, async (req, res) => {
   }
 });
 
-//get by id
-
+//get watchlist by id
 router.get("/watchlist/:id", auth, async (req, res) => {
   const user = req.auth.id;
   const { id } = req.params;
@@ -63,6 +64,7 @@ router.get("/watchlist/:id", auth, async (req, res) => {
   }
 });
 
+//delete media from watchlist
 router.delete("/watchlist/:id", auth, async (req, res) => {
   const user = req.auth.id;
   const mediaId = parseInt(req.params.id);
