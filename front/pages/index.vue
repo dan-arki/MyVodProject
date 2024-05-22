@@ -22,7 +22,7 @@
     </article>
 
     <!-- Listes plus populaires -->
-    <article class="mx-10">
+    <article class="mx-10 mt-8">
       <UiPostersList :titleText="'Les plus populaires'"></UiPostersList>
     </article>
 

@@ -4,12 +4,17 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 </script>
 
 <template>
-  <section class="carousel-container">
+  <section class="carousel-container filter">
+    <!-- <div class="filter">
+
+    </div> -->
     <Carousel
       :items-to-show="1"
       :navigation-enabled="true"
       :pagination-enabled="true"
       :wrap-around="true"
+      :autoplay="2500"
+      
       class="h-fit w-full"
     >
       <Slide
@@ -17,10 +22,7 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
         :key="trailer.id"
         class="h-full"
       >
-        <!-- <video class="w-full h-full object-cover" autoplay muted loop>
-          <source :src="video.src" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video> -->
+    
         <img
           class="w-full h-full object-cover"
           :src="getYoutubeThumbnail(trailer.trailer_url)"
@@ -28,11 +30,6 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
           Your browser does not support the video tag.
         </img>
       </Slide>
-
-      <!-- <template #addons>
-        <Navigation />
-        <Pagination />
-      </template> -->
     </Carousel>
   </section>
 </template>
@@ -93,6 +90,7 @@ export default {
   height: fit-content;
   padding: 0;
   position: relative;
+
 }
 
 .carousel-container .carousel {
@@ -117,4 +115,13 @@ video {
   min-width: 100vw;
   height: 100vh;
 }
+/* .filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+} */
 </style>
