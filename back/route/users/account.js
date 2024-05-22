@@ -1,9 +1,9 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
-
+import dotenv from "dotenv";
+dotenv.config(".env");
 import jwt from "jsonwebtoken";
 import { expressjwt } from "express-jwt"; // Assurez-vous d'installer ce module
-
 const prisma = new PrismaClient();
 const router = express.Router();
 const auth = expressjwt({
