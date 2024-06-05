@@ -4,3 +4,25 @@
     <UiPostersList :titleText="'WatchList'"></UiPostersList>
   </section>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      watchlist: [],
+    };
+  },
+
+  methods: {
+    async loadWatchlist() {
+      try {
+        const data = await api.getWatchlist();
+        console.log(data);
+        this.watchlist = data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>

@@ -24,6 +24,7 @@ export const api = {
     checkWatchlist : (id) => request(`/watchlist/${id}`),
     addToWatchlist : (id) => request(`/watchlist`, { method: 'POST',body : JSON.stringify({mediaId:id})}),
     removeFromWatchlist : (id) => request(`/watchlist/${id}`, { method: 'DELETE' }),
+    getWatchlist : () => request(`/watchlist`),
 
     //Watchings
     checkAlreadyViewed : (id) => request(`/watching/${id}`),

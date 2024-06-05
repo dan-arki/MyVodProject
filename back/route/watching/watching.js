@@ -9,6 +9,7 @@ const auth = expressjwt({
   algorithms: ["HS256"],
 });
 
+//add media to watching
 router.post("/watching", auth, async (req, res) => {
   const userId = req.auth.id;
   const { mediaId } = req.body;
@@ -54,6 +55,7 @@ router.post("/watching", auth, async (req, res) => {
   }
 });
 
+//get watching
 router.get("/watching", auth, async (req, res) => {
   const userId = req.auth.id;
   try {
