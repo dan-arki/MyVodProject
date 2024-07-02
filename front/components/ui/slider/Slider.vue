@@ -22,12 +22,13 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
         :key="trailer.id"
         class="h-full"
       >
+
     
         <img
           class="w-full h-full object-cover"
           :src="getYoutubeThumbnail(trailer.trailer_url)"
         >
-          Your browser does not support the video tag.
+          Your browser does not support the video.
         </img>
       </Slide>
     </Carousel>
